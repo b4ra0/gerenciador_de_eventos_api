@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gerenciador_de_eventos/db"
 	"gerenciador_de_eventos/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -9,6 +10,8 @@ import (
 
 func main() {
 	server := gin.Default()
+
+	db.Connectar()
 
 	server.GET("/eventos", getEventos)
 	server.POST("/eventos", createEvento)
