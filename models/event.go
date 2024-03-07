@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"gerenciador_de_eventos/db"
 	"time"
 )
@@ -36,12 +35,34 @@ func (e Evento) Save() error {
 	return err
 }
 
-func GetAllEventos() {
+func GetAllEventos() ([]Evento, error) {
 	query := `SELECT * FROM eventos`
-	stmt, err := db.DB.Prepare(query)
-	resultado, err := stmt.Exec()
+	row, err := db.DB.Query(query)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	fmt.Println(resultado)
+	defer row.Close()
+
+	for row.Next() {
+		var evento Evento
+		err := row.Scan(&evento.Id, &evento.Nome, &evento.Descricao, &evento.Local, &evento.Datetime, &evento.UserID)
+
+		if err != nil {
+			return nil, err
+		}
+		eventos = append(eventos, evento)
+	}
+	return eventos, err
+}
+
+func GetEventoById(id int64) (*Evento, error) {
+	query := `SELECT * FROM eventos WHERE ID = $1`
+	row := db.DB.QueryRow(query, id)
+
+	var evento Evento
+	err := row.Scan(&evento.Id, &evento.Nome, &evento.Descricao, &evento.Local, &evento.Datetime, &evento.UserID)
+	if err != nil {
+		return nil, err
+	}
+	return &evento, nil
 }

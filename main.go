@@ -6,6 +6,7 @@ import (
 	"gerenciador_de_eventos/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -14,9 +15,24 @@ func main() {
 	db.Connectar()
 
 	server.GET("/eventos", getEventos)
+	server.GET("/eventos/:id", showEvento)
 	server.POST("/eventos", createEvento)
 
 	server.Run(":8080") // localhost:8080
+}
+
+func showEvento(context *gin.Context) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Você deve informar um número inteiro"})
+		return
+	}
+	evento, err := models.GetEventoById(id)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Não foi possível mostrar o evento"})
+		return
+	}
+	context.JSON(http.StatusOK, evento)
 }
 
 func createEvento(context *gin.Context) {
@@ -41,7 +57,10 @@ func createEvento(context *gin.Context) {
 }
 
 func getEventos(context *gin.Context) {
-	//eventos :=
-	models.GetAllEventos()
-	//context.JSON(http.StatusOK, eventos)
+	eventos, err := models.GetAllEventos()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"mensagem": "Não foi possível mostrar os eventos"})
+		return
+	}
+	context.JSON(http.StatusOK, eventos)
 }
