@@ -1,0 +1,11 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+    # Just plain old shell command. You could use `make` as well.
+    delay=1500
+    cmd = "go build -o ./tmp/main ."
+    bin = "tmp/main"
+    include_ext = ["go", "html"]
+    stop_on_error = true
+    log = "air_errors.log"

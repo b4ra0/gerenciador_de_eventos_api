@@ -1,13 +1,9 @@
 FROM golang:latest
 
-WORKDIR /app
+RUN go install github.com/cosmtrek/air@latest
 
-COPY . .
+WORKDIR /var/www/
 
-RUN go mod download
+RUN go env -w GOFLAGS="-buildvcs=false"
 
-RUN go build -o /server
-
-EXPOSE 8080
-
-CMD [ "/server" ]
+ENTRYPOINT [ "air" ]

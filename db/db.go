@@ -18,12 +18,12 @@ const (
 var DataSourceName = fmt.Sprintf("host=%s port=%s user=%s "+
 	"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
-var db *sql.DB
+var DB *sql.DB
 var err error
 
 func Connectar() {
 	fmt.Println(DataSourceName)
-	db, err = sql.Open(driver, DataSourceName)
+	DB, err = sql.Open(driver, DataSourceName)
 
 	if err != nil {
 		panic(err.Error())
@@ -31,8 +31,8 @@ func Connectar() {
 		fmt.Println("Connected!")
 	}
 
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(5)
+	DB.SetMaxOpenConns(10)
+	DB.SetMaxIdleConns(5)
 
 	criarTabelas()
 }
@@ -48,7 +48,7 @@ func criarTabelas() {
 	    user_id INTEGER
 	    )
 `
-	_, err := db.Exec(criarTabelaEventos)
+	_, err := DB.Exec(criarTabelaEventos)
 
 	if err != nil {
 		fmt.Println(err)

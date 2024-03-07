@@ -31,12 +31,17 @@ func createEvento(context *gin.Context) {
 	evento.Id = 1
 	evento.UserID = 1
 
-	evento.Save()
-
+	err = evento.Save()
+	if err != nil {
+		fmt.Println(err)
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Ocorreu um erro ao salvar no banco de dados"})
+		return
+	}
 	context.JSON(http.StatusCreated, gin.H{"mensagem": "Evento criado!", "evento": evento})
 }
 
 func getEventos(context *gin.Context) {
-	eventos := models.GetAllEventos()
-	context.JSON(http.StatusOK, eventos)
+	//eventos :=
+	models.GetAllEventos()
+	//context.JSON(http.StatusOK, eventos)
 }
