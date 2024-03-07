@@ -21,7 +21,7 @@ var DataSourceName = fmt.Sprintf("host=%s port=%s user=%s "+
 var DB *sql.DB
 var err error
 
-func Connectar() {
+func Conectar() {
 	fmt.Println(DataSourceName)
 	DB, err = sql.Open(driver, DataSourceName)
 
