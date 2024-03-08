@@ -8,4 +8,6 @@ func RegistrarRotas(server *gin.Engine) {
 	server.GET("/eventos", getEventos)
 	server.GET("/eventos/:id", showEvento)
 	server.POST("/eventos", createEvento)
+	server.PUT("eventos/:id", updateEvento)
+	server.DELETE("eventos/:id", deleteEvento)
 }

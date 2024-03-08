@@ -51,3 +51,56 @@ func getEventos(context *gin.Context) {
 	}
 	context.JSON(http.StatusOK, eventos)
 }
+
+func updateEvento(context *gin.Context) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	idint := int(id)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Você deve informar um número inteiro"})
+		return
+	}
+	_, err = models.GetEventoById(id)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Este evento não existe"})
+		return
+	}
+
+	var eventoAtualizado models.Evento
+	err = context.ShouldBindJSON(&eventoAtualizado)
+	if err != nil {
+		fmt.Println(err)
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "dados incorretos"})
+		return
+	}
+	eventoAtualizado.Id = idint
+	err = eventoAtualizado.Update()
+	if err != nil {
+		fmt.Println(err)
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Ocorreu um erro ao atualizar no banco de dados"})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"mensagem": "Evento atualizado com sucesso!"})
+
+}
+
+func deleteEvento(context *gin.Context) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Você deve informar um número inteiro"})
+		return
+	}
+	evento, err := models.GetEventoById(id)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Este evento não existe"})
+		return
+	}
+
+	err = evento.Delete()
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"mensagem": "Não foi possível excluir o evento"})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"mensagem": "Evento deletado com sucesso!"})
+
+}
