@@ -14,7 +14,7 @@ type Evento struct {
 	UserID    int
 }
 
-var eventos = []Evento{}
+var eventos []Evento
 
 func (e Evento) Save() error {
 	query := `INSERT INTO eventos(nome, descricao, local, dateTime, user_id) VALUES ($1,$2,$3,$4,$5)`
@@ -42,6 +42,8 @@ func GetAllEventos() ([]Evento, error) {
 		return nil, err
 	}
 	defer row.Close()
+
+	eventos = nil
 
 	for row.Next() {
 		var evento Evento

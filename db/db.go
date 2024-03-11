@@ -8,7 +8,7 @@ import (
 
 const (
 	driver   = "postgres"
-	host     = "192.168.15.122"
+	host     = "192.168.0.189"
 	port     = "5432"
 	user     = "postgres"
 	password = "senha"
