@@ -1,7 +1,9 @@
 # makefile para build e run de docker-compose
 
 # Variáveis
-DOCKER_COMPOSE_FILE = docker-compose.yaml
+PORT=8080
+CONTAINER_NAME=goapp
+IMAGE_NAME=goapp
 
 # Alvos
 .PHONY: all build run
@@ -10,11 +12,11 @@ all: build run
 
 build:
 	@echo "Construindo containers..."
-	docker-compose -f $(DOCKER_COMPOSE_FILE) build
+	docker build -t $(IMAGE_NAME) .
 
 run:
 	@echo "Iniciando containers..."
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
+	docker run -d -p $(PORT):$(PORT) --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
 clean:
 	@echo "Parando e removendo containers..."
