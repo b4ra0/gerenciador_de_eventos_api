@@ -26,7 +26,7 @@ func Conectar() {
 	DB, err = sql.Open(driver, DataSourceName)
 
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	} else {
 		fmt.Println("Connected!")
 	}
