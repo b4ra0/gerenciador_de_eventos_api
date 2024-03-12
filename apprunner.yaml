@@ -3,6 +3,7 @@ runtime: go1
 build:
   commands:
     build:
-      - go build main.go
+      - make build
 run:
-  command: ./main
+  command:
+    - make run
