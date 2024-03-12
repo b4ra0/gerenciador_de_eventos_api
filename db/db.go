@@ -38,6 +38,18 @@ func Conectar() {
 }
 
 func criarTabelas() {
+	criarTabelaUsuarios := `
+	CREATE TABLE IF NOT EXISTS users (
+	    id SERIAL,
+	    email TEXT NOT NULL UNIQUE ,
+	    password TEXT NOT NULL
+	)
+`
+	_, err := DB.Exec(criarTabelaUsuarios)
+
+	if err != nil {
+		panic(err)
+	}
 	criarTabelaEventos := `
 	CREATE TABLE IF NOT EXISTS eventos (
 	    id SERIAL,
@@ -48,7 +60,7 @@ func criarTabelas() {
 	    user_id INTEGER
 	    )
 `
-	_, err := DB.Exec(criarTabelaEventos)
+	_, err = DB.Exec(criarTabelaEventos)
 
 	if err != nil {
 		fmt.Println(err)

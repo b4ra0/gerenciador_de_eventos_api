@@ -20,4 +20,5 @@ run:
 
 clean:
 	@echo "Parando e removendo containers..."
-	docker-compose -f $(DOCKER_COMPOSE_FILE) down
+	docker stop $(CONTAINER_NAME)
+	docker rm $(CONTAINER_NAME)

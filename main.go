@@ -1,7 +1,6 @@
 package main
 
 import (
-	"gerenciador_de_eventos/db"
 	"gerenciador_de_eventos/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +8,7 @@ import (
 func main() {
 	server := gin.Default()
 
-	db.Conectar()
+	//db.Conectar()
 
 	routes.RegistrarRotas(server)
 
